@@ -16,8 +16,10 @@ def handle_request(response):
 	for log in resp['logs']:
 		logset_name = log['logsets_info'][0]['name']
 		log_name = log['name']
-		logs.setdefault(logset_name, {}).setdefault(log_name, log['id'])
-		log_sets.setdefault(logset_name, log['logsets_info'][0]['id'])
+		log_key = log['id']
+		log_set_key = log['logsets_info'][0]['id']
+		logs.setdefault(logset_name, {}).setdefault(log_name, log_key)
+		log_sets.setdefault(logset_name, log_set_key)
 	return logs, log_sets
 
 if __name__ == '__main__':
