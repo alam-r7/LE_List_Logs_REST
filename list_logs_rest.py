@@ -16,20 +16,14 @@ def handle_request(response):
 	for log in resp['logs']:
 		logset_name = log['logsets_info'][0]['name']
 		log_name = log['name']
-		logs[logset_name] = {}
-		log_sets[logset_name] = {}
-		log_sets[logset_name] = log['logsets_info'][0]['id']
-	for log in resp['logs']:
-		logset_name = log['logsets_info'][0]['name']
-		log_name = log['name']
-		logs[logset_name][log_name] = {}
-		logs[logset_name][log_name] = log['id']
+		logs.setdefault(logset_name, {}).setdefault(log_name, log['id'])
+		log_sets.setdefault(logset_name, log['logsets_info'][0]['id'])
 	return logs, log_sets
 
 if __name__ == '__main__':
 	response = make_request()
 	logs, log_sets = handle_request(response)
-	print "log keys"
-	print str(logs) + '\n'
-	print "log set keys"
-	print str(log_sets) + '\n'
+	print "Log keys:"
+	print json.dumps(logs, sort_keys=True, indent=4, separators=(',', ': ')) + '\n'
+	print "Log Set keys:"
+	print json.dumps(log_sets, sort_keys=True, indent=4, separators=(',', ': '))
